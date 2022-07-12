@@ -12,7 +12,7 @@
 	<header class="header">
 		<div class="container">
 			<nav class="navbar">
-				<h1><a href="/" class="brand">Brand</a></h1>
+				<b id="opcionConexion"> <p class="text-success">Conectado a internet</p></b>
 				<button type="button" class="burger" id="burger">
 					<span class="burger-line"></span>
 					<span class="burger-line"></span>
@@ -21,8 +21,8 @@
 				<span class="overlay" id="overlay"></span>
 				<div class="menu" id="menu">
 					<ul class="menu-block">
-						<li class="menu-item"><a class="menu-link" href="#">Pagina 1</a></li>
-						<li class="menu-item"><a class="menu-link" href="#">Pagina 2</a></li>
+						<li class="menu-item"><a class="menu-link" href="/">Personas</a></li>
+						<li class="menu-item"><a class="menu-link" href="/TipoLibro/Index">Tipo Libro</a></li>
 						<li class="menu-item"><a class="menu-link" href="#">Pagina 3</a></li>
 						<li class="menu-item"><a class="menu-link" href="#">Pagina 4</a></li>
 						<li class="menu-item"><a class="menu-link" href="#">Pagina 5</a></li>
@@ -52,8 +52,18 @@
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/menu.js"></script>
+	<script src="~/js/sweetalert.js"></script>
+	<script src="~/js/generic.js"></script>
+
 	@await RenderSectionAsync("Scripts", required: false)
 	<script>
+		window.ononline = function() {
+			document.getElementById("opcionConexion").innerHTML="<p class='text-success'>Conectado a internet</p>"
+		}
+		window.onoffline = function() {
+			document.getElementById("opcionConexion").innerHTML="<p class='text-danger'>sin conexión a internet</p>"
+		}
+
 		if (navigator.serviceWorker) {
 			console.log("Permite Service Worker")
 			navigator.serviceWorker.register("/service-worker.js").then(res => {
