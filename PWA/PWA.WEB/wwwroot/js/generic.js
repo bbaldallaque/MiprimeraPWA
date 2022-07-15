@@ -67,7 +67,7 @@ function recuperarGenerico(url, idformulario,callback) {
                     setC("#" + idformulario + " [type='checkbox'][name='" + nombrename + "'][value='" + valores + "']")
                 }
             }
-           
+
         }
         if (callback != undefined) {
             callback(data);
@@ -295,11 +295,11 @@ function Confirmacion(titulo = "Confirmacion", texto = "Desea guardar los cambio
 
 function Exito(titulo = "Se guardo correctamente") {
     Swal.fire({
-        position: 'top-end',
+        position: 'top-center',
         icon: 'success',
         title: titulo,
         showConfirmButton: false,
-        timer: 1500
+        timer: 1900
     })
 }
 
@@ -380,10 +380,10 @@ async function fetchGet(url, tiporespuesta, callback, retorno = false) {
         if (rpta != "")
             callback(rpta)
         else {
-            alert("Ocurrion un error");
+            alert("Ocurrio un error");
             return rpta;
 		}
-       
+
     }
 }
 //[{"iidlaboratorio":1,"nombre":"SynLab","direccion":null,"personacontacto":null}
@@ -542,7 +542,7 @@ function pintar(objConfiguracion, objBusqueda, objFormulario) {
                     </button>`
     }
     if (objConfiguracion != null && objConfiguracion.nuevo == true && objConfiguracion.popup == true) {
-        contenido += `<button onclick="CallbackEditar(0)" type="button" class="btn btn-primary" data-bs-toggle="modal" 
+        contenido += `<button onclick="CallbackEditar(0)" type="button" class="btn btn-primary" data-bs-toggle="modal"
                       data-bs-target="#${objConfiguracionGlobal.popupId}">
                       Nuevo
                     </button>`
@@ -1028,7 +1028,7 @@ function LimpiarGenericoBusqueda(idformulario) {
         } else {
             document.getElementById(objConfiguracionGlobal.divContenedorTabla).innerHTML = res;
 		}
-        
+
     })
 
 
@@ -1061,7 +1061,7 @@ function BuscarDatosGenericoBusqueda(id) {
         } else {
             document.getElementById(objConfiguracionGlobal.divContenedorTabla).innerHTML = res;
 		}
-     
+
     })
 }
 
@@ -1114,9 +1114,9 @@ function ConstruirFormulario(objFormulario, tipo = "") {
                 contenido += "<br />"
                 for (var z = 0; z < objetoActual.labels.length; z++) {
                     contenido += `
-                       <input type="${objetoActual.type}" ${objetoActual.checked.includes(objetoActual.ids[z]) ? "checked" : ""} 
+                       <input type="${objetoActual.type}" ${objetoActual.checked.includes(objetoActual.ids[z]) ? "checked" : ""}
                 id="${objetoActual.ids[z]}"
-                         name="${objetoActual.name}${objetoActual.type == "checkbox" ? "[]" : ""}" 
+                         name="${objetoActual.name}${objetoActual.type == "checkbox" ? "[]" : ""}"
              value="${objetoActual.values[z]}" /> <label>${objetoActual.labels[z]}</label>
                      `;
                 }
@@ -1132,7 +1132,7 @@ function ConstruirFormulario(objFormulario, tipo = "") {
                             alt="" style="visibility:hidden"
                       height="${objetoActual.imgheight}" name="${objetoActual.namefoto}"  />
                 <br />
-                <input accept=".jpg,.png" onchange='previewImage(this,"img${objetoActual.namefoto}")' 
+                <input accept=".jpg,.png" onchange='previewImage(this,"img${objetoActual.namefoto}")'
                      type="file" name="${objetoActual.name}" />`
             }
             contenido += `</div>`;
@@ -1149,7 +1149,7 @@ function ConstruirFormulario(objFormulario, tipo = "") {
                             Guardar</button>
         <button class="btn btn-danger" onclick="LimpiarGenericoBusqueda('${objFormulario.idformulario}')" >Limpiar</button>`
         if (objFormularioGlobal.regresar == true) {
-            contenido += ` 
+            contenido += `
           <button class="btn btn-secondary" onclick="Regresar()" >Regresar</button>`
         }
     }

@@ -40,11 +40,29 @@ namespace PWA.WEB.Controllers
                              }).ToList();
                 }
 
-                
-
                 return lista;
             }
         }
+
+        public TipoLibroCLS recuperarTipoLibro(int id)
+        {
+            TipoLibroCLS  oTipoLibroCLS=new TipoLibroCLS(); ;
+
+            using (db_a89d9d_dbbibliotecaContext bd = new db_a89d9d_dbbibliotecaContext())
+            {
+                TipoLibro oTipoLibro = bd.TipoLibros.Where(p => p.Iidtipolibro == id).First();
+
+                oTipoLibroCLS.iidtipolibro = oTipoLibro.Iidtipolibro;
+                oTipoLibroCLS.nombre = oTipoLibro.Nombretipolibro;
+                oTipoLibroCLS.descripcion = oTipoLibro.Descripcion;
+
+                return oTipoLibroCLS;
+            }
+
+        }
+
+
+
 
         public int guardarTipoLibro(TipoLibroCLS oTipoLibroCLS)
         {
@@ -72,13 +90,11 @@ namespace PWA.WEB.Controllers
                         rpta = 1;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-
                     rpta = 0;
-                }              
+                }
             }
-
                 return rpta;
         }
     }

@@ -8,7 +8,9 @@ function listarTipoLibro() {
 		url: "TipoLibro/listarTipoLibro",
 		propiedades: ["nombre", "descripcion"],
 		cabeceras: ["Tipo Libro", "Descripcion"],
-		titlePopup: "Tipo Libro"
+		titlePopup: "Tipo Libro",
+		rowClickRecuperar: true,
+		propiedadId: "iidtipolibro"
 	},
 		{
 			url: "TipoLibro/listarTipoLibro",
@@ -25,8 +27,16 @@ function listarTipoLibro() {
 		}, {
 		type: "popup",
 			urlguardar: "TipoLibro/guardarTipoLibro",
+			urlrecuperar: "TipoLibro/recuperarTipoLibro",
+			parametrorecuperar: "id",
 		formulario: [
 			[
+				{
+					class: "d-none",
+					label: "Id tipo Libro",
+					name: "iidtipolibro",
+					type: "text"
+				},
 				{
 					class: "col-md-6",
 					label: "Nombre Tipo Libro",
