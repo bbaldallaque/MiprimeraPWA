@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="Nuevo()">
+  Nuevo
+</button>
+
+<div id="divTabla">
+
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="lblTitulo"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <form id="frmlibro" method="post">
+          <div class="row">
+              <div class="col-md-6">
+                  <label>Id libro</label>
+                  <input type="text" class="form-control" readonly name="iidlibro" />
+              </div>
+              <div class="col-md-6">
+                  <label>Titulo</label>
+                  <input type="text" class="form-control ob max-100 min-3" name="titulo" />
+              </div>
+               <div class="col-md-6">
+                  <label>Resumen</label>
+                  <textarea type="text" class="form-control ob max-300 min-5" name="resumen"> </textarea>
+              </div>
+              <div class="col-md-6">
+                  <label>No. Paginas</label>
+                  <input type="number" class="form-control ob" name="numeropaginas"/>
+              </div>
+               <div class="col-md-6">
+                  <label>Stock</label>
+                  <input type="number" class="form-control ob" name="stock"/>
+              </div>
+                <div class="col-md-6">
+                  <label>Autor</label>
+                  <select  name="iidautor" id="cboAutor" class="form-control ob"></select>
+              </div>
+
+               <div class="col-md-6 mt-3">
+                  <label>Tomar Foto de la camara</label>
+                  <video width="300" height="300" autoplay id="videoFoto" style="border: 1px solid"></video>
+                  <br />
+                  <button type="button" class="btn btn-primary" onclick="IniciarCamara('videoFoto')">Iniciar Camara</button>
+                  <button type="button" class="btn btn-primary" onclick="ApagarCamara('videoFoto')">Tomar Foto</button>
+              </div>
+          </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btnCerrar" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" onclick="GuardarDatos()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+@section scripts {
+    <script src="~/js/libro.js"></script>
+}
+
+
+

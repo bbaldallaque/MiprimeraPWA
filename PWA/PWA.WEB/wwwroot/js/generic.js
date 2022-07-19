@@ -67,7 +67,7 @@ function recuperarGenerico(url, idformulario,callback) {
                     setC("#" + idformulario + " [type='checkbox'][name='" + nombrename + "'][value='" + valores + "']")
                 }
             }
-           
+
         }
         if (callback != undefined) {
             callback(data);
@@ -295,11 +295,11 @@ function Confirmacion(titulo = "Confirmacion", texto = "Desea guardar los cambio
 
 function Exito(titulo = "Se guardo correctamente") {
     Swal.fire({
-        position: 'top-end',
+        position: 'top-center',
         icon: 'success',
         title: titulo,
         showConfirmButton: false,
-        timer: 1500
+        timer: 1900
     })
 }
 
@@ -380,10 +380,10 @@ async function fetchGet(url, tiporespuesta, callback, retorno = false) {
         if (rpta != "")
             callback(rpta)
         else {
-            alert("Ocurrion un error");
+            alert("Ocurrio un error");
             return rpta;
 		}
-       
+
     }
 }
 //[{"iidlaboratorio":1,"nombre":"SynLab","direccion":null,"personacontacto":null}
@@ -414,7 +414,7 @@ function llenarCombo(data, idcontrol, propiedadId, propiedadNombre, textoprimera
 async function fetchPost(url, tiporespuesta, frm, callback) {
     try {
         var raiz = document.getElementById("hdfOculto").value;
-        document.getElementById("divLoading").style.display = "block";
+        //document.getElementById("divLoading").style.display = "block";
         //http://localhost........
         var urlCompleta = window.location.protocol + "//" + window.location.host + "/" + raiz + url
         var res = await fetch(urlCompleta, {
@@ -432,7 +432,7 @@ async function fetchPost(url, tiporespuesta, frm, callback) {
     } catch (e) {
         console.log(e)
         alert("Ocurrion un error");
-        document.getElementById("divLoading").style.display = "none";
+        //document.getElementById("divLoading").style.display = "none";
     }
 }
 
@@ -542,7 +542,7 @@ function pintar(objConfiguracion, objBusqueda, objFormulario) {
                     </button>`
     }
     if (objConfiguracion != null && objConfiguracion.nuevo == true && objConfiguracion.popup == true) {
-        contenido += `<button onclick="CallbackEditar(0)" type="button" class="btn btn-primary" data-bs-toggle="modal" 
+        contenido += `<button onclick="CallbackEditar(0)" type="button" class="btn btn-primary" data-bs-toggle="modal"
                       data-bs-target="#${objConfiguracionGlobal.popupId}">
                       Nuevo
                     </button>`
@@ -1028,7 +1028,7 @@ function LimpiarGenericoBusqueda(idformulario) {
         } else {
             document.getElementById(objConfiguracionGlobal.divContenedorTabla).innerHTML = res;
 		}
-        
+
     })
 
 
@@ -1061,7 +1061,7 @@ function BuscarDatosGenericoBusqueda(id) {
         } else {
             document.getElementById(objConfiguracionGlobal.divContenedorTabla).innerHTML = res;
 		}
-     
+
     })
 }
 
@@ -1114,9 +1114,9 @@ function ConstruirFormulario(objFormulario, tipo = "") {
                 contenido += "<br />"
                 for (var z = 0; z < objetoActual.labels.length; z++) {
                     contenido += `
-                       <input type="${objetoActual.type}" ${objetoActual.checked.includes(objetoActual.ids[z]) ? "checked" : ""} 
+                       <input type="${objetoActual.type}" ${objetoActual.checked.includes(objetoActual.ids[z]) ? "checked" : ""}
                 id="${objetoActual.ids[z]}"
-                         name="${objetoActual.name}${objetoActual.type == "checkbox" ? "[]" : ""}" 
+                         name="${objetoActual.name}${objetoActual.type == "checkbox" ? "[]" : ""}"
              value="${objetoActual.values[z]}" /> <label>${objetoActual.labels[z]}</label>
                      `;
                 }
@@ -1132,7 +1132,7 @@ function ConstruirFormulario(objFormulario, tipo = "") {
                             alt="" style="visibility:hidden"
                       height="${objetoActual.imgheight}" name="${objetoActual.namefoto}"  />
                 <br />
-                <input accept=".jpg,.png" onchange='previewImage(this,"img${objetoActual.namefoto}")' 
+                <input accept=".jpg,.png" onchange='previewImage(this,"img${objetoActual.namefoto}")'
                      type="file" name="${objetoActual.name}" />`
             }
             contenido += `</div>`;
@@ -1149,7 +1149,7 @@ function ConstruirFormulario(objFormulario, tipo = "") {
                             Guardar</button>
         <button class="btn btn-danger" onclick="LimpiarGenericoBusqueda('${objFormulario.idformulario}')" >Limpiar</button>`
         if (objFormularioGlobal.regresar == true) {
-            contenido += ` 
+            contenido += `
           <button class="btn btn-secondary" onclick="Regresar()" >Regresar</button>`
         }
     }
@@ -1251,12 +1251,53 @@ function pintarExcelGenerico(idelemento, dataCadena, editable, especificoeditabl
     setI(idelemento, contenido);
 }
 
+function IniciarCamara(idvideo) {
+    if (navigator.mediaDevices) {
+        var videoFoto = document.getElementById(idvideo)
+        navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false
+        }
+        ).then(stream => {
+            videoFoto.srcObject = stream;
+        }).catch(err => {
+            alert(err)
+        });
+    }
+}
 
 
+function ApagarCamara(idvideo) {
+    var videoObject = document.getElementById(idvideo)
+    videoObject.pause()
+    videoObject.srcObject.getTracks()[0].stop()
+}
 
+function obtenerImagenVideo(idvideo) {
+    const video = document.getElementById(idvideo);
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d')
+        .drawImage(video, 0, 0, canvas.width, canvas.height);
+    const dataURL = canvas.toDataURL();
+    return dataURL
+}
 
+async function compartirDatosAplicaciones(titulo, texto, url) {
+    try {
+        if (navigator.share) {
+            await navigator.share({
+                title: titulo,
+                text: texto,
+                url: url
+            })
+        }
 
-
+    } catch (err) {
+        console.log(" No se puede compartir " + err)
+    }
+}
 
 
 
