@@ -1,0 +1,20 @@
+{
+	"short_name": "PWA App",
+	"name": "App PWA en net core",
+	"icons": [
+		{
+			"src": "/img/icon-192.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "/img/icon-512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	],
+	"start_url": "/Persona/",
+	"background_color": "#1294e0",
+	"display": "standalone",
+	"theme_color": "#ff584f"
+}

@@ -414,7 +414,7 @@ function llenarCombo(data, idcontrol, propiedadId, propiedadNombre, textoprimera
 async function fetchPost(url, tiporespuesta, frm, callback) {
     try {
         var raiz = document.getElementById("hdfOculto").value;
-        document.getElementById("divLoading").style.display = "block";
+        //document.getElementById("divLoading").style.display = "block";
         //http://localhost........
         var urlCompleta = window.location.protocol + "//" + window.location.host + "/" + raiz + url
         var res = await fetch(urlCompleta, {
@@ -432,7 +432,7 @@ async function fetchPost(url, tiporespuesta, frm, callback) {
     } catch (e) {
         console.log(e)
         alert("Ocurrion un error");
-        document.getElementById("divLoading").style.display = "none";
+        //document.getElementById("divLoading").style.display = "none";
     }
 }
 
@@ -1251,12 +1251,53 @@ function pintarExcelGenerico(idelemento, dataCadena, editable, especificoeditabl
     setI(idelemento, contenido);
 }
 
+function IniciarCamara(idvideo) {
+    if (navigator.mediaDevices) {
+        var videoFoto = document.getElementById(idvideo)
+        navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false
+        }
+        ).then(stream => {
+            videoFoto.srcObject = stream;
+        }).catch(err => {
+            alert(err)
+        });
+    }
+}
 
 
+function ApagarCamara(idvideo) {
+    var videoObject = document.getElementById(idvideo)
+    videoObject.pause()
+    videoObject.srcObject.getTracks()[0].stop()
+}
 
+function obtenerImagenVideo(idvideo) {
+    const video = document.getElementById(idvideo);
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d')
+        .drawImage(video, 0, 0, canvas.width, canvas.height);
+    const dataURL = canvas.toDataURL();
+    return dataURL
+}
 
+async function compartirDatosAplicaciones(titulo, texto, url) {
+    try {
+        if (navigator.share) {
+            await navigator.share({
+                title: titulo,
+                text: texto,
+                url: url
+            })
+        }
 
-
+    } catch (err) {
+        console.log(" No se puede compartir " + err)
+    }
+}
 
 
 

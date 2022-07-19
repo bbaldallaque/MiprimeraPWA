@@ -1,25 +1,31 @@
 ﻿window.onload = function () {
     listarPersonas();
-    activarNotificaciones();
+  /*  activarNotificaciones();*/
 
 }
 
-function activarNotificaciones() {
+//function activarNotificaciones() {
 
-    if (window.Notification) {
+//    if (window.Notification) {
 
-        if (Notification.permission != "granted") {
+//        if (Notification.permission != "granted") {
 
-            Notification.requestPermission(function (rpta) {
-                console.log(rpta)
-            })
+//            Notification.requestPermission(function (rpta) {
+//                if (rpta == "granted") {
+//                    new Notification("Mi primera notificacion", {
+//                        body: "Esta notificacion la vimos en el curso de PWA",
+//                        icon: "/img/icon-192.png"
 
-        }
 
-    }
+//                    })
+//                }
+//            })
 
-}
+//        }
 
+//    }
+
+//}
 
 
 function listarPersonas() {

@@ -3,10 +3,10 @@
 var nombreCacheDinamico = "cacheDinamico1"
 var nombreCacheEstatico = "cacheEstatico1"
 var archivosEstaticos = [
-    "/css/menu.css",
-    "/PWA.WEB.styles.css",
-    "/lib/jquery/dist/jquery.min.js",
-    "/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
+	"/css/menu.css",
+	"/PWA.WEB.styles.css",
+	"/lib/jquery/dist/jquery.min.js",
+	"/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
 	"/js/menu.js",
 	"/js/generic.js",
 	"/img/loading.gif",
@@ -15,7 +15,9 @@ var archivosEstaticos = [
 	"/js/sweetalert.js",
 	"/TipoLibro/ListarTipoLibro",
 	"/js/pouchDB.js",
-    "/"
+	"/js/libro.js",
+	"/js/galeria.js",
+	"/"
 ]
 self.addEventListener("install", event => {
 
@@ -120,10 +122,23 @@ self.addEventListener("sync", event => {
 				body: frm
 			}).then(res => {
 				db.remove(doc)
-            })
+			})
 
-        })
+		})
 	})
 
 	event.waitUntil(respuesta)
+})
+
+self.addEventListener("push", event => {
+
+	var data = event.data.text()
+	var valores = data.split("_")
+	var titulo = valores[0]
+	var opciones = {
+		body: valores[1],
+		icon: valores[2],
+		vibrate: [200, 100, 200, 100, 200, 100, 200]
+	}
+	event.waitUntil(self.registration.showNotification(titulo, opciones))
 })
