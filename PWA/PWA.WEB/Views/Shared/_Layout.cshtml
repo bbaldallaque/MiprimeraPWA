@@ -7,10 +7,10 @@
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="~/css/menu.css" />
 	<link rel="stylesheet" href="~/PWA.WEB.styles.css" />
-    <link rel="manifest" href="/manifest.json" />
+	<link rel="manifest" href="/manifest.json" />
 </head>
 <body>
-	<header class="header">
+	<header class="header" id="header">
 		<div class="container">
 			<nav class="navbar">
 				<b id="opcionConexion"> <p class="text-success">Conectado a internet</p></b>
@@ -26,8 +26,11 @@
 						<li class="menu-item"><a class="menu-link" href="/TipoLibro/Index">Tipo Libro</a></li>
 						<li class="menu-item"><a class="menu-link" href="/Libro/Index">Libro</a></li>
 						<li class="menu-item"><a class="menu-link" href="/Galeria/Index">Galeria</a></li>
-						<li class="menu-item"><a class="menu-link" href="#">Pagina 5</a></li>
-						<li class="menu-item"><a class="menu-link" href="#">Pagina 6</a></li>
+						<li class="menu-item"><a class="menu-link" href="/Contactos/Index">Contactos</a></li>
+										<li class="menu-item"><a class="menu-link" href="/Comentario/Index">Comentario</a></li>
+						<li class="menu-item" id="menuInstalar"><a class="menu-link" onclick="Instalar()">Instalar</a></li>
+						<li class="menu-item"><a class="menu-link"> <button onclick="Permisos()" class="btn btn-primary">Agregar permisos</button></a></li>
+
 					</ul>
 				</div>
 			</nav>
@@ -58,40 +61,42 @@
 
 	@await RenderSectionAsync("Scripts", required: false)
 	<script>
-var registroServiceWorker;
+		var registroServiceWorker;
 		window.ononline = function() {
-			document.getElementById("opcionConexion").innerHTML="<p class='text-success'>Conectado a internet</p>"
+			document.getElementById("opcionConexion").innerHTML = "<p class='text-success'>Conectado a internet</p>"
 		}
 		window.onoffline = function() {
-			document.getElementById("opcionConexion").innerHTML="<p class='text-danger'>sin conexión a internet</p>"
+			document.getElementById("opcionConexion").innerHTML = "<p class='text-danger'>sin conexión a internet</p>"
 		}
+
+		bloqueoPantalla();
 
 		if (navigator.serviceWorker) {
 			console.log("Permite Service Worker")
 			navigator.serviceWorker.register("/service-worker.js").then(res => {
-				registroServiceWorker=res
-                navigator.serviceWorker.ready.then(reg => {
+				registroServiceWorker = res
+				navigator.serviceWorker.ready.then(reg => {
 
-					res.pushManager.getSubscription().then(subs=>{
-                        if (subs == null) {
+					res.pushManager.getSubscription().then(subs => {
+						if (subs == null) {
 							fetchGet("Notificacion/generarLlavePublica", "text", function(Key) {
 
-                        registroServiceWorker.pushManager.subscribe({
-							userVisibleOnly:true,
-							applicationServerKey:Key
-						}).then(data=>data.toJSON())
-                            .then(subscripcion => {
-								console.log(subscripcion)
-                                var frm = new FormData();
-								frm.append("endpoint", subscripcion.endpoint)
-								frm.append("auth", subscripcion.keys.auth)
-								frm.append("p256dh", subscripcion.keys.p256dh)
-                                fetchPost("Notificacion/guardarSubscripcion", "text", frm, function(rpta) {
-									if(rpta==1) Exito("Se habilito notificaciones")
-									else Error("Ocurrio problamas con las notificaciones")
-								})
+								registroServiceWorker.pushManager.subscribe({
+									userVisibleOnly: true,
+									applicationServerKey: Key
+								}).then(data => data.toJSON())
+									.then(subscripcion => {
+										console.log(subscripcion)
+										var frm = new FormData();
+										frm.append("endpoint", subscripcion.endpoint)
+										frm.append("auth", subscripcion.keys.auth)
+										frm.append("p256dh", subscripcion.keys.p256dh)
+										fetchPost("Notificacion/guardarSubscripcion", "text", frm, function(rpta) {
+											if (rpta == 1) Exito("Se habilito notificaciones")
+											else Error("Ocurrio problamas con las notificaciones")
+										})
+									})
 							})
-					})
 						}
 					})
 				})
@@ -102,6 +107,20 @@ var registroServiceWorker;
 		} else {
 			console.log("No Permite Service Worker")
 		}
+
+		document.getElementById("menuInstalar").style.display = "none"
+		if (getPWADisplayMode() == "browser") {
+			document.getElementById("menuInstalar").style.display = "inline-block"
+
+		}
+
+function Permisos() {
+	DetectarInactividad(60, function(){
+        document.location.href="/Galeria/Index";
+	})
+}
+
+
 	</script>
 </body>
 </html>
