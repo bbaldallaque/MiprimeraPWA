@@ -33,7 +33,7 @@ function setSRC(namecontrol, valor, idformulario) {
         document.querySelector("#" + idformulario + " [name='" + namecontrol + "']").src = valor;
     }
 }
-function recuperarGenerico(url, idformulario,callback) {
+function recuperarGenerico(url, idformulario, callback) {
     //Todos los elementos
     var elementosName = document.querySelectorAll("#" + idformulario + " [name]");
     var nombrename;
@@ -267,7 +267,7 @@ function getN(namecontrol) {
 
 function Error(titulo = "Error", texto = "Ocurrio un error") {
     if (titulo != "No transport could be initialized successfully. Try specifying a different transport or none at all for auto initialization."
-        && titulo != "Error during negotiation request." && titulo!="Error parsing negotiate response."
+        && titulo != "Error during negotiation request." && titulo != "Error parsing negotiate response."
     )
         Swal.fire({
             icon: 'error',
@@ -315,7 +315,7 @@ function LimpiarDatos(idformulario) {
             document.getElementById(elementoActual.id).selectedIndex = 0;
         }
         else if (elementoActual.tagName.toUpperCase() == "IMG") {
-            document.getElementById(elementoActual.id).style.visibility="hidden"
+            document.getElementById(elementoActual.id).style.visibility = "hidden"
             setSRC(elementoName, "", idformulario)
         }
         else if ((elementoActual.tagName.toUpperCase() == "INPUT" && elementoActual.type.toUpperCase() != "RADIO")
@@ -382,7 +382,7 @@ async function fetchGet(url, tiporespuesta, callback, retorno = false) {
         else {
             alert("Ocurrio un error");
             return rpta;
-		}
+        }
 
     }
 }
@@ -712,17 +712,17 @@ function generarTabla(res) {
     var existeIdCheck = false;
     contenido += "<tbody id='tbody'>";
     for (var i = inicio; i < fin; i++) {
-        if (nregistros-1 >= i) {
+        if (nregistros - 1 >= i) {
             obj = res[i]
             contenido += `<tr ${objConfiguracionGlobal != null && objConfiguracionGlobal.cursor != undefined ?
                 "style='cursor:pointer'" : ''}
 
                         ${objConfiguracionGlobal != null && objConfiguracionGlobal.rowClickRecuperar != undefined ?
-                `onclick='rowClickRecuperarGenerico(${obj[objConfiguracionGlobal.propiedadId]})'
+                    `onclick='rowClickRecuperarGenerico(${obj[objConfiguracionGlobal.propiedadId]})'
                     style='cursor:pointer'` : ""}
 
                         ${objConfiguracionGlobal != null && objConfiguracionGlobal.rowClick != undefined ?
-                `onclick='rowClickEvent(${JSON.stringify(obj)})'` : ""}
+                    `onclick='rowClickEvent(${JSON.stringify(obj)})'` : ""}
                   >`;
             if (objConfiguracionGlobal != undefined && objConfiguracionGlobal.check == true) {
                 existeIdCheck = (idsChecks.indexOf(obj[objConfiguracionGlobal.propiedadId]) > -1);
@@ -996,7 +996,7 @@ function GuardarGenericoFormulario(idformulario, type) {
                     document.getElementById("btnCerrarModal").click();
                 }
                 Exito("Se guardo la informacion , cuando tenga internet viajara al Servidor")
-			}else
+            } else
                 Error();
 
         })
@@ -1018,7 +1018,7 @@ function LimpiarGenericoBusqueda(idformulario) {
             parametros += "&" + pair[0] + "=" + pair[1];
         c++;
     }
-    fetchGet(objConfiguracionGlobal.url + parametros,"json", function (res) {
+    fetchGet(objConfiguracionGlobal.url + parametros, "json", function (res) {
         if (typeof (res) == "object") {
             dataCompleta = res;
             InicializarPaginacion();
@@ -1027,7 +1027,7 @@ function LimpiarGenericoBusqueda(idformulario) {
             configurarPaginacion()
         } else {
             document.getElementById(objConfiguracionGlobal.divContenedorTabla).innerHTML = res;
-		}
+        }
 
     })
 
@@ -1042,10 +1042,10 @@ function LimpiarGenericoBusqueda(idformulario) {
 function BuscarDatosGenericoBusqueda(id) {
     var formu = document.getElementById(id);
     var frm = new FormData(formu);
-    var parametros="";
+    var parametros = "";
     var c = 0;
     for (var pair of frm.entries()) {
-        if(c==0)
+        if (c == 0)
             parametros += "/?" + pair[0] + "=" + pair[1];
         else
             parametros += "&" + pair[0] + "=" + pair[1];
@@ -1060,7 +1060,7 @@ function BuscarDatosGenericoBusqueda(id) {
             configurarPaginacion()
         } else {
             document.getElementById(objConfiguracionGlobal.divContenedorTabla).innerHTML = res;
-		}
+        }
 
     })
 }
@@ -1162,7 +1162,7 @@ function previewImage(input, idimagen) {
     var file = input.files[0];
     //control img
     var img = document.getElementById(idimagen);
-    img.style.visibility="visible"
+    img.style.visibility = "visible"
     var reader = new FileReader();
     reader.onloadend = function () {
         img.src = reader.result;
@@ -1299,9 +1299,211 @@ async function compartirDatosAplicaciones(titulo, texto, url) {
     }
 }
 
+async function escribirPortapapeles(texto) {
+    const respuesta = await navigator.clipboard.writeText(texto);
+    return respuesta;
+}
+
+async function leerPortapapeles() {
+    const respuesta = await navigator.clipboard.readText();
+    return respuesta;
+}
+
+async function capturaPantalla(html, nombre) {
+    var data = await html2canvas(html)
+    var image = data.toDataURL();
+    var a = document.createElement("a")
+    a.href = image;
+    a.download = nombre;
+    a.click();
+}
+
+function FullScreenElement(el) {
+    if (!document.fullscreenElement) {
+        el.requestFullscreen();
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+}
+
+function VozTexto(texto) {
+    if ('speechSynthesis' in window) {
+        const synth = window.speechSynthesis
+        const utterThis = new SpeechSynthesisUtterance(texto)
+        utterThis.pitch = 1;
+        utterThis.rate = 1;
+        utterThis.volume = 1;
+        synth.speak(utterThis)
+    } else {
+        console.log("Web Speech API not supported :-(")
+    }
+
+}
+
+function vibrarTelefono(tiempo = 500) {
+    if (navigator.vibrate)
+        navigator.vibrate([tiempo])
+}
+
+function startListening(callback) {
+    var recognition = new (webkitSpeechRecognition || SpeechRecognition)();
+    recognition.lang = 'en-US';
+    recognition.continuous = true;
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognition.start();
+    recognition.onresult = function () {
+        callback(event.results[event.results.length - 1][0].transcript.trim());
+    };
+}
+
+async function b64toBlob(base64) {
+    const base64Response = await fetch(base64);
+    const blob = await base64Response.blob();
+    return URL.createObjectURL(blob)
+}
 
 
+async function compartirImagen(titulo, texto, base64) {
+    const urlBlob = await b64toBlob(base64);
+    const img = await fetch(urlBlob);
+    const blob = await img.blob();
+    filesArray = [
+        new File([blob], 'share.jpg', {
+            type: 'image/jpeg',
+            lastModified: new Date().getTime()
+        })
+    ];
+    const dt = new DataTransfer();
+    dt.items.add(filesArray[0]);
+    var files = dt.files;
+    if (navigator.canShare({ files })) {
+        await navigator.share({
+            title: titulo,
+            text: texto,
+            files
+        });
+    }
+}
+
+var wakeLock
+async function bloqueoPantalla() {
+    if ('wakeLock' in navigator) {
+        try {
+            wakeLock = await navigator.wakeLock.request();
+        }
+        catch (err) {
+            console.log(`${err.message}`);
+        }
+    }
+}
+
+const visiblePantalla = async () => {
+    if (wakeLock !== null && document.visibilityState === 'visible') {
+        await bloqueoPantalla();
+    }
+};
+
+document.addEventListener('visibilitychange', visiblePantalla);
+
+var header
+navigator.getBattery().then(bateria => {
+     header = document.getElementById("header");
+    var porcentaje;
+    porcentaje = bateria.level * 100;
+    if (porcentaje < 15) {
+        header.style.background = "#C82333";
+    } else if (porcentaje < 45) {
+        header.style.background = "#E0A800";
+    } else {
+        header.style.background = "white";
+    }
+
+    bateria.addEventListener("levelchange", function () {
+        if (porcentaje < 15) {
+            header.style.background = "#C82333";
+        } else if (porcentaje < 45) {
+            header.style.background = "#E0A800";
+        } else {
+            header.style.background = "white";
+        }
+    })
+})
+
+async function seleccionarContacto(contactos) {
+
+    const isSupported = ('contacts' in navigator && 'ContactsManager' in window);
+    const availableProperties = await navigator.contacts.getProperties();
+    if (isSupported && availableProperties.includes('tel')) {
+        try {
+            const props = ['icon', 'name', 'tel', 'email', 'address'];
+            const opts = { multiple: true };
+            const contacts = await navigator.contacts.select(props, opts);
+            contactos(contacts);
+        } catch {
+            console.log("Ocurrio un error")
+        }
+    } else {
+        console.log('No se puede acceder a la API de contactos')
+    }
+}
+
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+});
+
+async function Instalar() {
+    if (deferredPrompt !== null && deferredPrompt != undefined) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            deferredPrompt = null;
+        }
+    }
+}
+
+function getPWADisplayMode() {
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+    if (document.referrer.startsWith('android-app://')) {
+        return 'twa';
+    } else if (navigator.standalone || isStandalone) {
+        return 'standalone';
+    }
+    return 'browser';
+}
+
+var controller = new AbortController();
+var signal = controller.signal;
+async function DetectarInactividad(tiempoSegundos, callbackInactivo, callbackActivo) {
+    if (await IdleDetector.requestPermission() != "granted") {
+        return false;
+    }
+    var oIdleDetector = new IdleDetector();
+    oIdleDetector.addEventListener("change", (e) => {
+        var useState = oIdleDetector.userState;
+        if (useState == "idle") callbackInactivo();
+        else callbackActivo();
+    })
+    await oIdleDetector.start({
+        threshold: tiempoSegundos * 1000,
+        signal
+    })
+}
 
 
-
+function paginaVisible(callbackOculta, callbackVisible) {
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "hidden") {
+            callbackOculta()
+        }
+        else {
+            callbackVisible()
+        }
+    })
+}
 

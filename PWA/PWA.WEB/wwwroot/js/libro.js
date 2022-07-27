@@ -1,5 +1,9 @@
 ﻿window.onload = function () {
     listarLibros();
+    startListening(function (texto) {
+        if (texto == "open") document.getElementById("btnNuevo").click();
+        else if (texto == "close") document.getElementById("btnCerrar").click();
+    })
 }
 
 function listarLibros() {
@@ -48,6 +52,7 @@ function GuardarDatos() {
 
     if (errores != "") {
         Error(errores)
+        vibrarTelefono(2000, 2000)
         return;
     }
 

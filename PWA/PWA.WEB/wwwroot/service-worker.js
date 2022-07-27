@@ -17,6 +17,8 @@ var archivosEstaticos = [
 	"/js/pouchDB.js",
 	"/js/libro.js",
 	"/js/galeria.js",
+	"/js/html2canvas.js",
+	"/js/contacto.js",
 	"/"
 ]
 self.addEventListener("install", event => {
